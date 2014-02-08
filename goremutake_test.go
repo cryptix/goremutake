@@ -2,7 +2,6 @@ package goremutake
 
 import (
 	"fmt"
-	"math"
 	"testing"
 )
 
@@ -14,10 +13,10 @@ var testCases = []struct {
 	{127, "tre"},
 	{128, "beba"},
 	{256, "biba"},
-	{uint(math.Pow(128, 2)), "bebaba"},
-	{uint(math.Pow(128, 2)) - 1, "tretre"},
-	{uint(math.Pow(128, 3)), "bebababa"},
-	{uint(math.Pow(128, 3)) - 1, "tretretre"},
+	{128 << 7, "bebaba"},
+	{(128 << 7) - 1, "tretre"},
+	{128 << 14, "bebababa"},
+	{(128 << 14) - 1, "tretretre"},
 	{10610353957, "koremutake"},
 	{4398046511103, "tretretretretretre"},
 }
