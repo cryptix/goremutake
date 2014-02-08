@@ -32,8 +32,11 @@ func TestEncode(t *testing.T) {
 }
 
 func ExampleEncode() {
-	fmt.Println(Encode(12345))
-	// Output: drano
+	fmt.Println(Encode(10610353957))
+	fmt.Println(Encode(5778515749))
+
+	// Output: koremutake
+	// goremutake
 }
 
 func TestDecodeValidInput(t *testing.T) {
@@ -69,6 +72,9 @@ func TestDecodeInvalidSyllable(t *testing.T) {
 }
 
 func ExampleDecode() {
-	fmt.Println(Decode("babebibobu"))
-	// Output: 2130308 <nil>
+	fmt.Println(Decode("koremutake"))
+	fmt.Println(Decode("goremutake"))
+
+	// Output: 10610353957 <nil>
+	// 5778515749 <nil>
 }
