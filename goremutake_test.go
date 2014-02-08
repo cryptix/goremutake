@@ -36,16 +36,39 @@ func ExampleEncode() {
 	// Output: drano
 }
 
-func TestDecode(t *testing.T) {
+func TestDecodeValidInput(t *testing.T) {
 	for _, tcase := range testCases {
-		actual := Decode(tcase.EncString)
+		actual, err := Decode(tcase.EncString)
+		if err != nil {
+			t.Errorf("'%s' should be %d\n Should not return an error:%v", tcase.EncString, tcase.Number, err)
+		}
 		if actual != tcase.Number {
-			t.Errorf("'%s' should be %d - Actual:%d", tcase.EncString, tcase.Number, actual)
+			t.Errorf("'%s' should be %d\nActual:%d Expected:%d", tcase.EncString, tcase.Number, actual)
+		}
+	}
+}
+
+func TestDecodeLength(t *testing.T) {
+	var lengthCases = []string{"", "a", "foo"}
+	for _, tcase := range lengthCases {
+		_, err := Decode(tcase)
+		if err.Error() != ErrorInputLength {
+			t.Errorf("Should return an error for input length. '%s'", tcase)
+		}
+	}
+}
+
+func TestDecodeInvalidSyllable(t *testing.T) {
+	var invalidCases = []string{"xyz", "qy"}
+	for _, tcase := range invalidCases {
+		_, err := Decode(tcase)
+		if err.Error() != ErrorInputSyllable {
+			t.Errorf("Should return an error for invalid syllable. '%s'\nError:%v", tcase, err)
 		}
 	}
 }
 
 func ExampleDecode() {
 	fmt.Println(Decode("babebibobu"))
-	// Output: 2130308
+	// Output: 2130308 <nil>
 }

@@ -10,6 +10,17 @@ This implementation is based on Patrick Schork's implementation in Python.
 */
 package goremutake
 
+import (
+	"errors"
+)
+
+// known errors
+const (
+	ErrorInputLength   = "Invalid length of input string"
+	ErrorInputSyllable = "Invalid syllable in input string"
+)
+
+// number of syllables
 const syllables = 128
 
 var phonemes = []string{
@@ -42,35 +53,45 @@ func Encode(value uint) string {
 }
 
 //Decode Koremutake string to unsigned integer value
-func Decode(input string) (x uint) {
-	var bit string
+func Decode(input string) (value uint, err error) {
+
+	// construct map of indexes to ease lookup
+	phonemesMap := make(map[string]uint, 128)
+	for k, v := range phonemes {
+		phonemesMap[v] = uint(k)
+	}
+
+	if len(input) < 2 {
+		return 0, errors.New(ErrorInputLength)
+	}
+
+	// iterate over input and calculate value
+	var (
+		idx uint
+		ok  bool
+	)
 	for input != "" {
-		if in(input[:2]) {
-			bit, input = input[:2], input[2:]
-		} else {
-			bit, input = input[:3], input[3:]
+		// fmt.Println(input, len(input))
+		if len(input) < 2 {
+			return 0, errors.New(ErrorInputLength)
 		}
 
-		x = x*syllables + indexOf(bit)
-	}
-	return x
-}
+		if idx, ok = phonemesMap[input[:2]]; ok {
+			input = input[2:]
+			value = value*syllables + idx
+			continue
+		}
 
-// []string helpers
-func in(syl string) bool {
-	for _, p := range phonemes {
-		if syl == p {
-			return true
+		if len(input) >= 3 {
+			if idx, ok = phonemesMap[input[:3]]; ok {
+				input = input[3:]
+				value = value*syllables + idx
+				continue
+			}
 		}
+
+		return 0, errors.New(ErrorInputSyllable)
+
 	}
-	return false
-}
-func indexOf(syl string) uint {
-	for i, p := range phonemes {
-		if syl == p {
-			return uint(i)
-		}
-	}
-	// do we want to panic for invalid syllables?..
-	return 0
+	return
 }
