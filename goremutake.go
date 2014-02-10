@@ -71,7 +71,6 @@ func Decode(input string) (value uint, err error) {
 		ok  bool
 	)
 	for input != "" {
-		// fmt.Println(input, len(input))
 		if len(input) < 2 {
 			return 0, errors.New(ErrorInputLength)
 		}
