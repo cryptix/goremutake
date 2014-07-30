@@ -77,3 +77,15 @@ func ExampleDecode() {
 	// Output: 10610353957 <nil>
 	// 5778515749 <nil>
 }
+
+func BenchmarkDecode(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Decode("goremutake")
+	}
+}
+
+func BenchmarkEncode(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Encode(5778515749)
+	}
+}
