@@ -1,5 +1,7 @@
-Goremutake
+goremutake
 ==========
+[![GoDoc](https://godoc.org/github.com/cryptix/goremutake?status.svg)](https://godoc.org/github.com/cryptix/goremutake)
+[![Build Status](https://travis-ci.org/cryptix/goremutake.png?branch=master)](https://travis-ci.org/cryptix/goremutake)
 
 Convert to and from Koremutake Memorable Random Strings.
 
